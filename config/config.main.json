@@ -7,7 +7,7 @@
     "DATABASE_JSON_BEAUTIFY": true,
     "FCA_OPTIONS": {
         "pauseLog": true,
-        "logLevel": "silent",
+        "logLevel": "ar_YS",
         "selfListen": false,
         "listenEvents": true,
         "forceLogin": true,
@@ -21,7 +21,7 @@
     "ABSOLUTES": [
         "100054677207079"
     ],
-    "NAME": "Xavia",
+    "NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
     "PREFIX": "-",
     "timezone": "Asia/Ho_Chi_Minh",
     "REFRESH": "43200000",
