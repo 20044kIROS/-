@@ -51,7 +51,7 @@
 -   New features:
     -   **join/leave messages/gif**
     -   set **join/leave message/gif** for _each group_
-    -   set **bot language** for _each group_
+    -   set **bot ar_YS** for _each group_
 
 ## v2.0.6 - 2022/11/29
 
