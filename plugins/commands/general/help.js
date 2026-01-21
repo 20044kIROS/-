@@ -101,11 +101,11 @@ ${funCmds.length ? funCmds.map(c => `• ${c}`).join("\n") : "لا توجد أو
 
 ━━━━━━━━━━━━━━━━━━━
 📦 أوامر أخرى
-${otherCmds.length ? otherCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
+${otherCmds.length"ar_YS" ? otherCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
 
 ━━━━━━━━━━━━━━━━━━━
 📝 لشرح أي أمر:
-${prefix}مساعدة <اسم الأمر>
+${prefix}مساعدة<-اسم الأمر>
 `;
 
     // =========================
