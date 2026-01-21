@@ -1,5 +1,5 @@
 {
-  "language": "ar",
+  "language": "ar_YS",
   "DeveloperMode": false,
   "autoCreateDB": true,
   "iconUnsend": {
@@ -15,7 +15,7 @@
   "BOTNAME": "مورو",
   "AMDIN_NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
   "FACEBOOK_ADMIN": "https://www.facebook.com/akayjy.syjyrwh",
-  "PREFIX": ".",
+  "PREFIX":"-",
   "ADMINBOT": [ "YourFacebookID" ],
   "NDH": [ "" ],
   "DATABASE": {
