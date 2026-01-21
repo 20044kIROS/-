@@ -11,7 +11,7 @@ const config = {
 }
 
 const langData = {
-    "en_US": {
+    "ar_YS": {
         "help.list": "{list}\n\n⇒ Total: {total} commands\n⇒ Use {syntax} [command] to get more information about a command.",
         "help.commandNotExists": "Command {command} does not exists.",
         "help.commandDetails": `
