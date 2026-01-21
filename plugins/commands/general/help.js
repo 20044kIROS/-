@@ -3,7 +3,7 @@ const config = {
     aliases: ["help", "اوامر"],
     description: "عرض قائمة أوامر البوت بشكل مفصل",
     usage: "",
-    credits: "XaviaTeam"
+    credits: "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ"
 }
 
 async function onCall({ message, args, prefix, userPermissions }) {
@@ -25,7 +25,7 @@ ${prefix}${cmd.name} ${cmd.usage || ""}
 
 📂 القسم: ${cmd.category}
 ⏱️ الإنتظار: ${cmd.cooldown || 3} ثواني
-👤 المطوّر: ${cmd.credits || "غير معروف"}
+👤 المطوّر: ${cmd.credits || "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ"}
 `);
     }
 
@@ -67,12 +67,12 @@ ${prefix}${cmd.name} ${cmd.usage || ""}
 ━━━━━━━━━━━━━━━━━━━
 
 👑 قسم المطوّر
-${devCmds.length ? devCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
+${devCmds.length"ar_YS"? devCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
 
     "BOTNAME": "مورو",
     "AMDIN_NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
     "FACEBOOK_ADMIN": "https://www.facebook.com/DoraYogiEXE",
-    "PREFIX": ".",
+    "PREFIX": "-",
     "ADMINBOT": [
         "61582197102454"
     ],
