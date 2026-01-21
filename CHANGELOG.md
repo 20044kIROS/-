@@ -1,168 +1,399 @@
-<!--
-## version - yyyy/mm/dd
- -->
+{
+  "language": "ar_YS",
+  "DeveloperMode": false,
+  "autoCreateDB": true,
+  "iconUnsend": {
+    "status": true,
+    "icon": "💓"
+  },
+  "notiGroup": false,
+  "NOTIFICATION": true,
+  "YASSIN": false,
+  "allowInbox": true,
+  "commandDisabled": [],
+  "eventDisabled": [],
+  "BOTNAME": "مورو",
+  "AMDIN_NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
+  "FACEBOOK_ADMIN": "https://www.facebook.com/akayjy.syjyrwh",
+  "PREFIX":"-",
+  "ADMINBOT": [ "YourFacebookID" ],
+  "NDH": [ "" ],
+  "DATABASE": {
+    "sqlite": {
+      "storage": "data.sqlite"
+    }
+  },
+  "APPSTATEPATH": "appstate.json",
+  "FCAOption": {
+    "forceLogin": true,
+    "listenEvents": true,
+    "pauseLog": true,
+    "logLevel": "error",
+    "selfListen": false,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1"
+  },
+  "version": "1.2.14",
+  "menu": {
+    "autoUnsend": {
+      "status": true,
+      "timeOut": 60
+    },
+    "sendAttachments": {
+      "status": true,
+      "random": true,
+      "url": "./media/fblite_video.mp4"
+    }
+  },
+  "log": {
+    "enable": true
+  },
+  "cave": {
+    "cooldownTime": 100000
+  },
+  "daily": {
+    "cooldownTime": 540000,
+    "rewardCoin": 500
+  },
+  "math": {
+    "WOLFRAM": "T8J8YV-H265UQ762K"
+  },
+  "minecraft": {
+    "APIKEY": ""
+  },
+  "randomname": {
+    "APIKEY": "mi451266190"
+  },
+  "subnau": {
+    "APIKEY": ""
+  },
+  "tikinfo": {
+    "apikey": "fOeckmtu"
+  },
+  "xidach": {
+    "maxPlayers": 5,
+    "normalWinBonus": 1,
+    "superWinBonus": 2,
+    "epicWinBonus": 4
+  },
+  "spam": {
+    "spamDelay": 2
+  },
+  "subnautica": {
+    "APIKEY": ""
+  },
+  "adminOnly": false,
+  "اوامر": {
+    "autoUnsend": true,
+    "delayUnsend": 20
+  },
+  "بنك": {
+    "APIKEY": "YourAPIKey"
+  },
+  "هلب": {
+    "autoUnsend": true,
+    "delayUnsend": 300
+  },
+  "تاريخ": {
+    "cooldownTime": 200000000
+  },
+  "الرانك": {
+    "autoUnsend": true,
+    "unsendMessageAfter": 5
+  },
+  "كهف": {
+    "cooldown": 2000000000
+  },
+  "لقب": {
+    "APIKEY": "YourAPIKey"
+  },
+  "طقس": {
+    "OPEN_WEATHER": "YourOpenWeatherAPIKey"
+  }
+}import fs from 'fs';
 
-## 2.3.0-beta.2 2023/11/21
+const config = {
+  name: "ايموجي",
+  aliases: ["guessemoji"],
+  version: version,
+  description: "لعبة تخمين الأمثال أو الأفلام من خلال الإيموجي.",
+  usage: "",
+  cooldown: 20,
+  permissions: [0],
+  credits: "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ"
+};
 
--   Refactor code
--   Reduced the use of global variables
--   Added [type definitions](https://github.com/XaviaTeam/XaviaBot/blob/main/types/global.d.ts) and [jsconfig](https://github.com/XaviaTeam/XaviaBot/blob/main/jsconfig.json) for VSCode IntelliSense
--   Moved all utils functions to `global.utils` object
--   Bug fixes, logics corrections and overall improvements
+const puzzles = [
+  { question: "🐒👁️‍🗨️🦌", answer: "القرد في عين أمه غزال"},
+  { question: "🐦‍⬛➡️🐦‍⬛", answer: "الطيور على أشكالها تقع"},
+  { question: "🚢🧊💔", answer: "تيتانيك"},
+  { question: "🏃‍♂️💨🇪🇬", answer: "صعيدي في الجامعة الأمريكية"},
+  { question: "🐈❤️🐟", answer: "القط يحب خناقه"},
+  { question: "✋🔥", answer: "اللي إيده في المية مش زي اللي إيده في النار"},
+  { question: "🧠➡️💰", answer: "العقل زينة"},
+  { question: "🧅😭", answer: "البصل بيبكي"},
+  { question: "🦅🧠", answer: "العقل زينة والغراب شاهد"},
+  { question: "🐢🏁", answer: "السلحفاة سبقت الأرنب"},
+  { question: "🥛🍚", answer: "رز بلبن"},
+  { question: "🧼🧽", answer: "نظافة"},
+  { question: "🕷️💃", answer: "رقصة العنكبوت"},
+  { question: "🧃🧊", answer: "عصير مثلج"},
+  { question: "🧓👶", answer: "من شب على شيء شاب عليه"},
+  { question: "🦁👑", answer: "ملك الغابة"},
+  { question: "🧳✈️", answer: "شنطة سفر"},
+  { question: "🐍🍎", answer: "الثعبان والتفاحة"},
+  { question: "🧠💪", answer: "العقل السليم في الجسم السليم"},
+  { question: "🧟‍♂️🏃‍♀️", answer: "هروب من الزومبي"},
+  { question: "🪞👸", answer: "بياض الثلج"},
+  { question: "🧊🧋", answer: "مشروب بارد"},
+  { question: "🐓🌅", answer: "صياح الديك عند الفجر"},
+  { question: "🧀🐭", answer: "الجبنة والفأر"},
+  { question: "🧠🔒", answer: "عقل مغلق"},
+  { question: "🦜🗣️", answer: "ببغاء بيقلد"},
+  { question: "🧃🍋", answer: "عصير ليمون"},
+  { question: "🧊💔", answer: "قلب بارد"},
+  { question: "🧠🌀", answer: "تفكير عميق"},
+  { question: "🧹🏠", answer: "نظف بيتك"},
+  { question: "🧊🧊🧊", answer: "تلج كتير"},
+  { question: "🧠🧠🧠", answer: "عقول كثيرة"},
+  { question: "🧃🍎", answer: "عصير تفاح"},
+  { question: "🧊🧃🍓", answer: "عصير فراولة مثلج"},
+  { question: "🧠💡", answer: "فكرة ذكية"},
+  { question: "🧠🔥", answer: "دماغ مولعة"},
+  { question: "🧠❄️", answer: "دماغ باردة"},
+  { question: "🧠🎯", answer: "تركيز عالي"},
+  { question: "🧠🧘", answer: "صفاء ذهني"},
+  { question: "🧠📚", answer: "دماغ مثقفة"},
+  { question: "🧠🎓", answer: "طالب ذكي"},
+  { question: "🧠💤", answer: "دماغ نايمة"},
+  { question: "🧠😵", answer: "دماغ لفت"},
+  { question: "🧠🤯", answer: "دماغ انفجرت"},
+  { question: "🧠🤔", answer: "تفكير عميق"},
+  { question: "🧠😈", answer: "دماغ شريرة"},
+  { question: "🧠😇", answer: "دماغ طيبة"},
+  { question: "🧠👻", answer: "دماغ مرعبة"}
+];
 
-## 2.3.0-beta.1 2023/10/26
+async function gameReplyHandler({ message, eventData }) {
+  const { body, senderID } = message;
+  const { answer, gameMessageID } = eventData;
+  if (body.toLowerCase() === answer.toLowerCase()) {
+    global.api.unsendMessage(gameMessageID);
+    const winnerInfo = await global.controllers.Users.getInfo(senderID);
+    const winnerName = winnerInfo?.name || senderID;
+    await global.controllers.Users.increaseMoney(senderID, 50);
+    message.reply(` إجابة صحيحة من ${winnerName}\nالإجابة هي ❴${answer}❵\nلقد ربحت 50 نقطة`);
+  }
+}
 
--   OOP Support for Database
--   Brand new feature: **effects** (beta)
--   Duplicate listener fixed
--   Refactor code
--   More JSDoc for functions/methods
--   Better error handling
+async function onCall({ message }) {
+  const randomPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
+  message.reply(`🤔 خمن المثل أو الفيلم من هذه الإيموجيز:\n\n${randomPuzzle.question}\n\nلديك 30 ثانية للإجابة`)
+    .then(sentMessage => {
+      sentMessage.addReplyEvent({
+        callback: gameReplyHandler,
+        answer: randomPuzzle.answer,
+        gameMessageID: sentMessage.messageID
+      });
+      setTimeout(() => {
+        global.api.unsendMessage(sentMessage.messageID).catch(() => {});
+      }, 30000);
+    })
+    .catch(err => {
+      console.error("خطأ في لعبة الإيموجي:", err);
+      message.reply("حدث خطأ أثناء بدء اللعبة.");
+    });
+}
 
-## 2.1.4 - 2023/07/02
+export default {
+  config,
+  onCall
+};// cmd/nickname.js
+const config = require('../config.json');
+const log = require('../tools/logger');
+const ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ= '▫';
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
--   Adapted to new FCA version!
--   Fixed some bugs
+function toArabicName(name) {
+  if (!name) return "";
+  let text = name.toLowerCase();
+  const complexMap = {
+    'th': 'ث',
+    'sh': 'ش',
+    'ch': 'تْش',
+    'ph': 'ف',
+    'gh': 'غ',
+    'oo': 'و',
+    'ee': 'ي',
+    'ay': 'ي',
+    'ie': 'ي',
+    'ue': 'و',
+    'qu': 'كْو',
+    // التعامل مع حرف 'C' قبل حروف العلة الخفيفة (e, i, y)
+    'ce': 'س',
+    'ci': 'س',
+    'cy': 'س',
+    // التعامل مع حرف 'G' قبل حروف العلة الخفيفة (e, i, y)
+    'ge': 'ج',
+    'gi': 'ج',
+    'gy': 'ج',
+  };
 
-## 2.1.2 - 2023/02/12
+  // تطبيق التحويلات المعقدة
+  for (const [key, value] of Object.entries(complexMap)) {
+    // استخدام تعبير منتظم (Regular Expression) مع العلم بحالة الحروف (g)
+    text = text.replace(new RegExp(key, 'g'), value);
+  }
 
--   New cron-job (auto-send) feature!
--   Added support for custom help display name for each language
--   Fixed security issues
--   Major bug fixes and overall improvements
+  // 2. قواعد التحويل لحرف واحد
+  const simpleMap = {
+    // حروف العلة (Vowels)
+    'a': 'ا',
+    'e': 'ي',
+    'i': 'ي',
+    'o': 'و',
+    'u': 'و',
+    'y': 'ي',
+    // الحروف الساكنة (Consonants)
+    'b': 'ب',
+    'c': 'ك',
+    'd': 'د',
+    'f': 'ف',
+    'g': 'ج',
+    'h': 'هـ',
+    'j': 'ج',
+    'k': 'ك',
+    'l': 'ل',
+    'm': 'م',
+    'n': 'ن',
+    'p': 'ب',
+    'q': 'ق',
+    'r': 'ر',
+    's': 'س',
+    't': 'ت',
+    'v': 'ف',
+    'w': 'و',
+    'x': 'كس',
+    'z': 'ز',
+    // للحفاظ على المسافات
+    ' ': ' ',
+    '-': '-',
+  };
 
-## v2.1.0 - 2022/12/15
+  // تطبيق التحويلات البسيطة
+  return text.split("").map(c => simpleMap[c] || c).join("");
+}
 
--   Added a bunch of new commands
--   New global functions: **getAvatarURL**
--   Added **maintain** mode which makes the bot only listen to moderators
--   Added **isHidden** and **isAbsolute** to command config
--   New **ABSOLUTES** config, the upper level of moderators
--   Even more support for Arabic Language, big thanks to Malk
--   Fixed error bot not running 24/7 on replit
--   Added cleanup function back
--   Overall improvements and bug fixes
+// دالة لإضافة رمز الجنس حسب البيانات
+function getGenderEmoji(gender) {
+  if (!gender) return "";
+  const g = gender.toLowerCase();
+  if (g === "male") return "🚹";
+  if (g === "female") return "🚺";
+  if (g === "no specific gender" || g === "other") return "🚻";
+  return "";
+}
 
-## v2.0.7 - 2022/12/06
+module.exports = {
+  name: 'كنيات',
+  otherName: ['كنيه', 'nickname'],
+  rank: 1,
+  cooldown: 5,
+  type: 'المجموعة',
+  run: async (api, event, args) => {
+    const { threadID, messageID, body } = event;
+    if (args.length === 0) {
+      return api.sendMessage(
+        `لصيغة: كنية البوت كنية عام <القالب>`,
+        threadID,
+        messageID
+      );
+    }
 
--   Minor bug fixes (_nsfw-mode_, _permissions_, _glitch_)
--   Added a lot of Commands
--   More support for Arabic Language, big thanks to Malk
--   New features:
-    -   **join/leave messages/gif**
-    -   set **join/leave message/gif** for _each group_
-    -   set **bot ar_YS** for _each group_
+    // ======================================
+    // تغيير كنية البوت
+    // ======================================
+    if (args[0] === "بوت") {
+      const newNickname = config?.BOTNAME;
+      if (!newNickname) {
+        return api.sendMessage(
+          ` لا توجد قيمة BOTNAME داخل config.json."مورو"
+          threadID,
+          messageID
+        );
+      }
+      try {
+        const botID = await api.getCurrentUserID();
+        await api.nickname(newNickname, threadID, botID);
+        return api.sendMessage(
+          `${ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ} تم تعيين كنية البوت : ${newNickname}`,
+          threadID,
+          messageID
+        );
+      } catch (err) {
+        log?.error("BOT Nickname Error:", err);
+        return api.sendMessage(
+          `فشل تغيير كنية البوت.\n${err.message}`,
+          threadID,
+          messageID
+        );
+      }
+    }
 
-## v2.0.6 - 2022/11/29
-
--   Fixed NSFW system
--   Added NSFW commands
--   Added support for Arabic (ar_SY) language
-
-## v2.0.5 - 2022/11/04
-
--   Small fixes
--   Folder removal support for update.js
-
-## v2.0.4 - 2022/11/03
-
--   Restructured code
--   New plugins format
--   Support mongodb
--   Remove support for multiple commands in one file
--   Better support for replit/glitch
-
-## v1.4.6 - 2022/08/17
-
--   Remove auto create monitor
--   Improve setup
-
-## v1.4.5 - 2022/08/16
-
--   Node >= 16 is required
--   ImgBB key is now optional + using Base64 to store image by default.
--   CLI -> xConsole
--   Added setup.js
--   More Commands!
--   More logging!
--   Removed process-stats, using os/process instead.
--   Improve dashboard
--   Better Updater
--   Fix case handlers
--   delay (Promise) -> sleep (synchronous)
--   Ready for SQL/mongoDB support
--   Overall improvements
-
-## v1.4.4 - 2022/07/28
-
--   Better Glitch Support
-
-## v1.4.3 - 2022/07/26
-
--   Optimize Code
--   Added update script
-
-## v1.4.2 - 2022/07/24
-
--   Various fixes
--   Optimize Database
--   Added Economy System
-
-## v1.4.0 - 2022/07/22
-
--   New Plugin Format
--   Removed message.js, reaction.js and reply.js on plugins
--   Added CLI, maybe...
--   Added [DOCS.md](https://github.com/XaviaTeam/XaviaBot/blob/main/DOCS.md) for plugins, database, etc.
--   Added some functions to global
--   Config is now JSON
--   Remade loader.js
--   Update Lang files
--   Optimize Packages
--   Optimize Source Code
--   Ready for Official Release
-
-## v1.3.0 - 2022/05/19
-
--   Better Cache Handling, **automatically** clear cache when booting up
--   Better Role: `ADMINS` => `MODERATORS`, `botadmin` => `moderator`, `groupadmin` => `admin`, etc.
--   Check For Updates
--   **MULTILANG SUPPORT** with **getLang** method
--   Remade Event Handler: **Split into multiple files**
--   New Database feature: **Backup/Restore**
--   Remade Dashboard
--   Optimize Source Code
-
-## v1.2.4 - 2022/05/08
-
--   Added CHANGELOG.md
--   Fix Restart Loop Memory Leak
--   Fix Maintenance Mode
--   Better Glitch Support
--   Better Appstate Handling, maybe...
--   Optimize Source Code
-
-## v1.2.2 - 2022/05/01
-
--   Optimize Database
--   Fix Plugins Load
--   Optimize Dependencies Load
-
-## v1.2.0 - 2022/05/01
-
--   Added Global Variables
--   Added Secret Environments
--   Added login function
--   Publish to Github (Private)!
-
-## v1.1.0 - 2022/04/29
-
--   Fix Client
--   Fix Appstate Path
--   Changed from modules to plugins
--   Config JSON to JS/JSON
--   Optimize Source Code
-
-## v1.0.0 - 2022/04/26
-
--   Beta Release
+    // ======================================
+    // gc لتغيير كنيات أعضاء المجموعة
+    // ======================================
+    if (args[0] === "الكل" || args[0] === "عام") {
+      const template = args.slice(1).join(" ");
+      if (!template || !template.includes("الاسم")) {
+        return api.sendMessage(
+          `يجب أن يحتوي القالب على كلمة (الاسم).`,
+          threadID,
+          messageID
+        );
+      }
+      try {
+        const threadInfo = await api.getThreadInfo(threadID);
+        const members = threadInfo.userInfo || [];
+        const botID = await api.getCurrentUserID();
+        api.sendMessage(
+          `⏳ جاري تطبيق الكنيات على ${members.length} عضو...`,
+          threadID,
+          messageID
+        );
+        for (const member of members) {
+          const userID = member.id;
+          if (userID === botID) continue; // منع تغيير اسم البوت
+          const fullName = member.name || member.firstName || "User";
+          const firstName = toArabicName(fullName.split(" ")[0]);
+          const genderEmoji = getGenderEmoji(member.gender);
+          // استبدال الاسم والجنس في أي مكان داخل القالب
+          const finalNickname = template
+            .replace(/الاسم/g, firstName)
+            .replace(/الجنس/g, genderEmoji);
+          try {
+            await api.nickname(finalNickname, threadID, userID);
+            await sleep(700);
+          } catch (e) {
+            log?.error("Member Nickname Error:", e);
+          }
+        }
+        return api.sendMessage(
+          `${ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ} تم تطبيق الكنيات بنجاح!`,
+          threadID
+        );
+      } catch (err) {
+        log?.error("GC Nickname Error:", err);
+        return api.sendMessage(
+          `${ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ} ⚠️ فشل تعديل الكنيات.\n${err.message}`,
+          threadID,
+          messageID
+        );
+      }
+    }
+    return api.sendMessage(
+      `خيار غير صحيح. استخدم: كنية bot كنية عام <القالب>`,
+      threadID,
+      messageID
+    );
+  }
+};
