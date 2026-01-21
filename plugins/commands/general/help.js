@@ -1,8 +1,8 @@
 const config = {
     name: "مساعدة",
-    aliases: ["help", "اوامر"],
+    aliases: ["help"-"اوامر"],
     description: "عرض قائمة أوامر البوت بشكل مفصل",
-    usage: "",
+    usage: "-",
     credits: "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ"
 }
 
