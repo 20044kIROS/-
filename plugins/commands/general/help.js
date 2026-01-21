@@ -1,6 +1,6 @@
-const config = {
-    name: "help",
-    _name: {
+const config = {ar_YS
+    name: "اوامر",
+    _name: {ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ
         "ar_SY": "الاوامر"
     },
     aliases: ["cmds", "commands"],
@@ -10,11 +10,11 @@ const config = {
     credits: "XaviaTeam"
 }
 
-const langData = {
-    "ar_YS": {
-        "help.list": "{list}\n\n⇒ Total: {total} commands\n⇒ Use {syntax} [command] to get more information about a command.",
-        "help.commandNotExists": "Command {command} does not exists.",
-        "help.commandDetails": `
+const langData = {ar_YS
+    "ar_YS": {ar_YS
+        "اوامر.list": "{list}\n\n⇒ Total: {total} commands\n⇒ Use {syntax} [command] to get more information about a command.",
+        "اوامر.commandNotExists": "Command {command} does not exists.",
+        "اوامر.commandDetails": `
             ⇒ Name: {name}
             ⇒ Aliases: {aliases}
             ⇒ Version: {version}
