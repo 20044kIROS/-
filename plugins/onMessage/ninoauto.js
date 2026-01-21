@@ -1,53 +1,112 @@
-const langData = {
-    "en_US": {
-        "noResult": "Nino doesn't understand what you're saying :("
-    },
-    "vi_VN": {
-        "noResult": "Nino không hiểu bạn đang nói gì :("
-    },
-    "ar_SY": {
-        "noResult": "نينو لا تفهم ما تقول :("
+{
+  "language": "ar",
+  "DeveloperMode": false,
+  "autoCreateDB": true,
+  "iconUnsend": {
+    "status": true,
+    "icon": "💓"
+  },
+  "notiGroup": false,
+  "NOTIFICATION": true,
+  "YASSIN": false,
+  "allowInbox": true,
+  "commandDisabled": [],
+  "eventDisabled": [],
+  "BOTNAME": "مورو",
+  "AMDIN_NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
+  "FACEBOOK_ADMIN": "https://www.facebook.com/akayjy.syjyrwh",
+  "PREFIX": ".",
+  "ADMINBOT": [ "YourFacebookID" ],
+  "NDH": [ "" ],
+  "DATABASE": {
+    "sqlite": {
+      "storage": "data.sqlite"
     }
-}
-
-const onLoad = () => {
-    if (!global.hasOwnProperty("ninoauto")) global.ninoauto = {};
-}
-
-const _3Sec = 3000;
-
-const onCall = ({ message, getLang, data }) => {
-    const { senderID, threadID } = message;
-
-    if (senderID == global.botID) return;
-    if (!global.nino.hasOwnProperty(threadID) && !global.nino[threadID]) return;
-    if (message.body.startsWith(`${data?.thread?.data?.prefix || global.config.PREFIX}nino off`)) return;
-
-    if (!global.ninoauto.hasOwnProperty(message.threadID)) global.ninoauto[threadID] = {};
-    if (!global.ninoauto[threadID].hasOwnProperty(senderID)) global.ninoauto[threadID][senderID] = 0;
-
-    if (global.ninoauto[threadID][senderID] + _3Sec > Date.now()) return;
-    global.ninoauto[threadID][senderID] = Date.now();
-
-    global
-        .GET(`${global.xva_api.main}/nino/get?key=${encodeURIComponent(message.body)}`)
-        .then((res) => {
-            const { data } = res;
-            const { status } = data;
-
-            if (status == 1) {
-                return message.reply(data.reply);
-            } else {
-                return message.reply(getLang("noResult"));
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-}
-
-export default {
-    onLoad,
-    langData,
-    onCall
+  },
+  "APPSTATEPATH": "appstate.json",
+  "FCAOption": {
+    "forceLogin": true,
+    "listenEvents": true,
+    "pauseLog": true,
+    "logLevel": "error",
+    "selfListen": false,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1"
+  },
+  "version": "1.2.14",
+  "menu": {
+    "autoUnsend": {
+      "status": true,
+      "timeOut": 60
+    },
+    "sendAttachments": {
+      "status": true,
+      "random": true,
+      "url": "./media/fblite_video.mp4"
+    }
+  },
+  "log": {
+    "enable": true
+  },
+  "cave": {
+    "cooldownTime": 100000
+  },
+  "daily": {
+    "cooldownTime": 540000,
+    "rewardCoin": 500
+  },
+  "math": {
+    "WOLFRAM": "T8J8YV-H265UQ762K"
+  },
+  "minecraft": {
+    "APIKEY": ""
+  },
+  "randomname": {
+    "APIKEY": "mi451266190"
+  },
+  "subnau": {
+    "APIKEY": ""
+  },
+  "tikinfo": {
+    "apikey": "fOeckmtu"
+  },
+  "xidach": {
+    "maxPlayers": 5,
+    "normalWinBonus": 1,
+    "superWinBonus": 2,
+    "epicWinBonus": 4
+  },
+  "spam": {
+    "spamDelay": 2
+  },
+  "subnautica": {
+    "APIKEY": ""
+  },
+  "adminOnly": false,
+  "اوامر": {
+    "autoUnsend": true,
+    "delayUnsend": 20
+  },
+  "بنك": {
+    "APIKEY": "YourAPIKey"
+  },
+  "هلب": {
+    "autoUnsend": true,
+    "delayUnsend": 300
+  },
+  "تاريخ": {
+    "cooldownTime": 200000000
+  },
+  "الرانك": {
+    "autoUnsend": true,
+    "unsendMessageAfter": 5
+  },
+  "كهف": {
+    "cooldown": 2000000000
+  },
+  "لقب": {
+    "APIKEY": "YourAPIKey"
+  },
+  "طقس": {
+    "OPEN_WEATHER": "YourOpenWeatherAPIKey"
+  }
 }
