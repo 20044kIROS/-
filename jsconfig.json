@@ -2,8 +2,8 @@ const config = {
     name: "مساعدة",
     aliases: ["help", "اوامر"],
     description: "عرض قائمة أوامر البوت بشكل مفصل",
-    usage: "",
-    credits: "XaviaTeam"
+    usage: "-",
+    credits: "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ"
 }
 
 async function onCall({ message, args, prefix, userPermissions }) {
