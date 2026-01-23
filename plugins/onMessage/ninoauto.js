@@ -1,112 +1,125 @@
-{
-  "language": "ar_YS",
-  "DeveloperMode": false,
-  "autoCreateDB": true,
-  "iconUnsend": {
-    "status": true,
-    "icon": "💓"
-  },
-  "notiGroup": false,
-  "NOTIFICATION": true,
-  "YASSIN": false,
-  "allowInbox": true,
-  "commandDisabled": [],
-  "eventDisabled": [],
-  "BOTNAME": "مورو",
-  "AMDIN_NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
-  "FACEBOOK_ADMIN": "https://www.facebook.com/akayjy.syjyrwh",
-  "PREFIX":"-",
-  "ADMINBOT": [ "YourFacebookID" ],
-  "NDH": [ "" ],
-  "DATABASE": {
-    "sqlite": {
-      "storage": "data.sqlite"
-    }
-  },
-  "APPSTATEPATH": "appstate.json",
-  "FCAOption": {
-    "forceLogin": true,
-    "listenEvents": true,
-    "pauseLog": true,
-    "logLevel": "error",
-    "selfListen": false,
-    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1"
-  },
-  "version": "1.2.14",
-  "menu": {
-    "autoUnsend": {
-      "status": true,
-      "timeOut": 60
-    },
-    "sendAttachments": {
-      "status": true,
-      "random": true,
-      "url": "./media/fblite_video.mp4"
-    }
-  },
-  "log": {
-    "enable": true
-  },
-  "cave": {
-    "cooldownTime": 100000
-  },
-  "daily": {
-    "cooldownTime": 540000,
-    "rewardCoin": 500
-  },
-  "math": {
-    "WOLFRAM": "T8J8YV-H265UQ762K"
-  },
-  "minecraft": {
-    "APIKEY": ""
-  },
-  "randomname": {
-    "APIKEY": "mi451266190"
-  },
-  "subnau": {
-    "APIKEY": ""
-  },
-  "tikinfo": {
-    "apikey": "fOeckmtu"
-  },
-  "xidach": {
-    "maxPlayers": 5,
-    "normalWinBonus": 1,
-    "superWinBonus": 2,
-    "epicWinBonus": 4
-  },
-  "spam": {
-    "spamDelay": 2
-  },
-  "subnautica": {
-    "APIKEY": ""
-  },
-  "adminOnly": false,
-  "اوامر": {
-    "autoUnsend": true,
-    "delayUnsend": 20
-  },
-  "بنك": {
-    "APIKEY": "YourAPIKey"
-  },
-  "هلب": {
-    "autoUnsend": true,
-    "delayUnsend": 300
-  },
-  "تاريخ": {
-    "cooldownTime": 200000000
-  },
-  "الرانك": {
-    "autoUnsend": true,
-    "unsendMessageAfter": 5
-  },
-  "كهف": {
-    "cooldown": 2000000000
-  },
-  "لقب": {
-    "APIKEY": "YourAPIKey"
-  },
-  "طقس": {
-    "OPEN_WEATHER": "YourOpenWeatherAPIKey"
-  }
+const config = {
+    name: "مساعدة",
+    aliases: ["help", "اوامر"],
+    description: "عرض قائمة أوامر البوت بشكل مفصل",
+    usage: "-",
+    credits: "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ"
 }
+
+async function onCall({ message, args, prefix, userPermissions }) {
+    const { commandsConfig } = global.plugins;
+
+    // لو طلب شرح أمر معيّن
+    const commandName = args[0]?.toLowerCase();
+    if (commandName) {
+        const cmd = commandsConfig.get(commandName);
+        if (!cmd || cmd.isHidden)
+            return message.reply("❌ الأمر غير موجود");
+
+        return message.reply(
+`📌 اسم الأمر: ${cmd.name}
+🔁 الأسماء البديلة: ${cmd.aliases?.join(", ") || "لا يوجد"}
+📝 الوصف: ${cmd.description || "لا يوجد"}
+🛠️ الاستخدام:
+${prefix}${cmd.name} ${cmd.usage || ""}
+
+📂 القسم: ${cmd.category}
+⏱️ الإنتظار: ${cmd.cooldown || 3} ثواني
+👤 المطوّر: ${cmd.credits || "غير معروف"}
+`);
+    }
+
+    // =========================
+    // تجميع الأوامر حسب الأقسام
+    // =========================
+    let devCmds = [];
+    let groupCmds = [];
+    let toolsCmds = [];
+    let funCmds = [];
+    let otherCmds = [];
+
+    for (const [key, cmd] of commandsConfig.entries()) {
+        if (cmd.isHidden) continue;
+        if (!cmd.permissions) cmd.permissions = [0, 1, 2];
+        if (!cmd.permissions.some(p => userPermissions.includes(p))) continue;
+
+        const name = cmd.name || key;
+        const cat = (cmd.category || "").toLowerCase();
+
+        if (cat.includes("dev") || cat.includes("owner") || cat.includes("المطور")) {
+            devCmds.push(name);
+        } else if (cat.includes("group") || cat.includes("admin") || cat.includes("المجموعه")) {
+            groupCmds.push(name);
+        } else if (cat.includes("tool") || cat.includes("util") || cat.includes("ادوات")) {
+            toolsCmds.push(name);
+        } else if (cat.includes("fun") || cat.includes("game") || cat.includes("ترفيه")) {
+            funCmds.push(name);
+        } else {
+            otherCmds.push(name);
+        }
+    }
+
+    // =========================
+    // شكل القائمة
+    // =========================
+    let body =
+`✨🤖 قائمة أوامر البوت 🤖✨
+━━━━━━━━━━━━━━━━━━━
+
+👑 قسم المطوّر
+${devCmds.length ? devCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
+
+    "BOTNAME": "مورو",
+    "AMDIN_NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
+    "FACEBOOK_ADMIN": "https://www.facebook.com/DoraYogiEXE",
+    "PREFIX": ".",
+    "ADMINBOT": [
+        "61582197102454"
+    ],
+    "NDH": [
+        ""
+    ],
+    "DATABASE": {
+        "sqlite": {
+            "storage": "data.sqlite"
+        }
+    },
+    "APPSTATEPATH": "appstate.json",
+    credits:  "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ" 
+
+━━━━━━━━━━━━━━━━━━━
+👥 قسم المجموعة
+${groupCmds.length ? groupCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
+
+━━━━━━━━━━━━━━━━━━━
+🛠️ قسم الأدوات
+${toolsCmds.length ? toolsCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
+
+━━━━━━━━━━━━━━━━━━━
+🎮 قسم الترفيه
+${funCmds.length ? funCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
+
+━━━━━━━━━━━━━━━━━━━
+📦 أوامر أخرى
+${otherCmds.length ? otherCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
+
+━━━━━━━━━━━━━━━━━━━
+📝 لشرح أي أمر:
+${prefix}مساعدة <اسم الأمر>
+`;
+
+    // =========================
+    // 🔲 مكان الصورة (لاحقاً)
+    // =========================
+    /*
+    const image = await global.getStream("رابط_الصورة_هنا");
+    return message.reply({ body, attachment: image });
+    */
+
+    return message.reply(body);
+}
+
+export default {
+    config,
+    onCall
+           }
