@@ -1,3 +1,4 @@
+        }
 const config = {
     name: "مساعدة",
     aliases: ["help", "اوامر"],
