@@ -2,8 +2,8 @@ const config = {
     name: "مساعدة",
     aliases: ["help", "اوامر"],
     description: "عرض قائمة أوامر البوت بشكل مفصل",
-    usage: "",
-    credits: "XaviaTeam"
+    usage: "-",
+    credits: "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ"
 }
 
 async function onCall({ message, args, prefix, userPermissions }) {
@@ -72,7 +72,7 @@ ${devCmds.length ? devCmds.map(c => `• ${c}`).join("\n") : "لا توجد أو
     "BOTNAME": "مورو",
     "AMDIN_NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
     "FACEBOOK_ADMIN": "https://www.facebook.com/DoraYogiEXE",
-    "PREFIX": ".",
+    "PREFIX": "-",
     "ADMINBOT": [
         "61582197102454"
     ],
@@ -101,7 +101,7 @@ ${funCmds.length ? funCmds.map(c => `• ${c}`).join("\n") : "لا توجد أو
 
 ━━━━━━━━━━━━━━━━━━━
 📦 أوامر أخرى
-${otherCmds.length"ar_YS" ? otherCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
+${otherCmds.length ? otherCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
 
 ━━━━━━━━━━━━━━━━━━━
 📝 لشرح أي أمر:
@@ -122,4 +122,4 @@ ${prefix}مساعدة <اسم الأمر>
 export default {
     config,
     onCall
-}
+    }
