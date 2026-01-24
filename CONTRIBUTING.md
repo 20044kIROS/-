@@ -1,92 +1,125 @@
-# Contributing
+const config = {
+    name: "مساعدة",
+    aliases: ["help", "اوامر"],
+    description: "عرض قائمة أوامر البوت بشكل مفصل",
+    usage: "",
+    credits: "XaviaTeam"
+}
 
-When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change. 
+async function onCall({ message, args, prefix, userPermissions }) {
+    const { commandsConfig } = global.plugins;
 
-Please note we have a code of conduct, please follow it in all your interactions with the project.
+    // لو طلب شرح أمر معيّن
+    const commandName = args[0]?.toLowerCase();
+    if (commandName) {
+        const cmd = commandsConfig.get(commandName);
+        if (!cmd || cmd.isHidden)
+            return message.reply("❌ الأمر غير موجود");
 
-## Pull Request Process
+        return message.reply(
+`📌 اسم الأمر: ${cmd.name}
+🔁 الأسماء البديلة: ${cmd.aliases?.join(", ") || "لا يوجد"}
+📝 الوصف: ${cmd.description || "لا يوجد"}
+🛠️ الاستخدام:
+${prefix}${cmd.name} ${cmd.usage || ""}
 
-1. Ensure any install or build dependencies are removed before the end of the layer when doing a 
-   build.
-2. Update the README.md with details of changes to the interface, this src new environment 
-   variables, exposed ports, useful file locations and container parameters.
-3. Increase the version numbers in any examples files and the README.md to the new version that this
-   Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
-4. You may merge the Pull Request in once you have the sign-off of two other developers, or if you 
-   do not have permission to do that, you may request the second reviewer to merge it for you.
+📂 القسم: ${cmd.category}
+⏱️ الإنتظار: ${cmd.cooldown || 3} ثواني
+👤 المطوّر: ${cmd.credits || "غير معروف"}
+`);
+    }
 
-## Code of Conduct
+    // =========================
+    // تجميع الأوامر حسب الأقسام
+    // =========================
+    let devCmds = [];
+    let groupCmds = [];
+    let toolsCmds = [];
+    let funCmds = [];
+    let otherCmds = [];
 
-### Our Pledge
+    for (const [key, cmd] of commandsConfig.entries()) {
+        if (cmd.isHidden) continue;
+        if (!cmd.permissions) cmd.permissions = [0, 1, 2];
+        if (!cmd.permissions.some(p => userPermissions.includes(p))) continue;
 
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, gender identity and expression, level of experience,
-nationality, personal appearance, race, religion, or sexual identity and
-orientation.
+        const name = cmd.name || key;
+        const cat = (cmd.category || "").toLowerCase();
 
-### Our Standards
+        if (cat.includes("dev") || cat.includes("owner") || cat.includes("المطور")) {
+            devCmds.push(name);
+        } else if (cat.includes("group") || cat.includes("admin") || cat.includes("المجموعه")) {
+            groupCmds.push(name);
+        } else if (cat.includes("tool") || cat.includes("util") || cat.includes("ادوات")) {
+            toolsCmds.push(name);
+        } else if (cat.includes("fun") || cat.includes("game") || cat.includes("ترفيه")) {
+            funCmds.push(name);
+        } else {
+            otherCmds.push(name);
+        }
+    }
 
-Examples of behavior that contributes to creating a positive environment
-include:
+    // =========================
+    // شكل القائمة
+    // =========================
+    let body =
+`✨🤖 قائمة أوامر البوت 🤖✨
+━━━━━━━━━━━━━━━━━━━
 
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
+👑 قسم المطوّر
+${devCmds.length ? devCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
 
-Examples of unacceptable behavior by participants include:
+    "BOTNAME": "مورو",
+    "AMDIN_NAME": "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ",
+    "FACEBOOK_ADMIN": "https://www.facebook.com/DoraYogiEXE",
+    "PREFIX": ".",
+    "ADMINBOT": [
+        "61582197102454"
+    ],
+    "NDH": [
+        ""
+    ],
+    "DATABASE": {
+        "sqlite": {
+            "storage": "data.sqlite"
+        }
+    },
+    "APPSTATEPATH": "appstate.json",
+    credits:  "ᏆᎬᏁᎶᎬᏁ ᏚᎯᎷᎯ" 
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+━━━━━━━━━━━━━━━━━━━
+👥 قسم المجموعة
+${groupCmds.length ? groupCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
 
-### Our Responsibilities
+━━━━━━━━━━━━━━━━━━━
+🛠️ قسم الأدوات
+${toolsCmds.length ? toolsCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
 
-Project maintainers are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.
+━━━━━━━━━━━━━━━━━━━
+🎮 قسم الترفيه
+${funCmds.length ? funCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
 
-Project maintainers have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
+━━━━━━━━━━━━━━━━━━━
+📦 أوامر أخرى
+${otherCmds.length ? otherCmds.map(c => `• ${c}`).join("\n") : "لا توجد أوامر"}
 
-### Scope
+━━━━━━━━━━━━━━━━━━━
+📝 لشرح أي أمر:
+${prefix}مساعدة <اسم الأمر>
+`;
 
-This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an appointed
-representative at an online or offline event. Representation of a project may be
-further defined and clarified by project maintainers.
+    // =========================
+    // 🔲 مكان الصورة (لاحقاً)
+    // =========================
+    /*
+    const image = await global.getStream("رابط_الصورة_هنا");
+    return message.reply({ body, attachment: image });
+    */
 
-### Enforcement
+    return message.reply(body);
+}
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at [xaviateam@protonmail.com](mailto:xaviateam@protonmail.com). All
-complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
-obligated to maintain confidentiality with regard to the reporter of an incident.
-Further details of specific enforcement policies may be posted separately.
-
-Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
-
-### Attribution
-
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at [http://contributor-covenant.org/version/1/4][version]
-
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
+export default {
+    config,
+    onCall
+        }
